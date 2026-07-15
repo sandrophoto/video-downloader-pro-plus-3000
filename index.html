@@ -17,24 +17,25 @@
 <style>
 :root{
   --paper:#F2EFE6;--paper-2:#E7E3D6;--ink:#121212;
-  --blue:#2340D4;--red:#E8412A;--yellow:#F7C51E;--white:#fff;
-  --bd:2px solid var(--ink);
+  --red:#E8412A;--yellow:#F7C51E;--blue:#2340D4;--white:#fff;
+  /* couleur de CETTE app : son icône est monochrome. Son identité EST
+     l'absence de couleur — l'accent, c'est l'encre ; le contraste, le papier. */
+  --app:#121212;--panel:#121212;
   --sans:"Archivo","Helvetica Neue",Helvetica,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
   --ease:cubic-bezier(.2,.8,.2,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+/* v2 : plus de cadre de page. Le papier va bord à bord. */
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-/* pas d'overflow:hidden ici — ça casserait le position:sticky de la nav */
-.frame{background:var(--paper);margin:10px;border:var(--bd)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px;width:100%}
-.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--app)}
 
-/* ---------- NAV ---------- */
-nav{border-bottom:var(--bd);background:var(--paper);position:sticky;top:0;z-index:60}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+/* ---------- NAV — un filet, pas une boîte ---------- */
+nav{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:60}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px;gap:20px}
 .logo{display:flex;align-items:center;gap:6px;flex:none}
 .logo .sq{width:22px;height:22px;background:var(--red);color:var(--white);font-family:var(--mono);
   font-size:10px;font-weight:700;display:grid;place-items:center}
@@ -50,141 +51,156 @@ nav{border-bottom:var(--bd);background:var(--paper);position:sticky;top:0;z-inde
 @media(min-width:900px){.nav-links{display:flex}}
 .nav-links a:not(.btn){font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;
   position:relative;padding:4px 0}
-.nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--red);
+.nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--yellow);
   transition:width .28s var(--ease)}
 .nav-links a:not(.btn):hover::after{width:100%}
 
-/* ---------- BOUTONS ---------- */
+/* ---------- BOUTONS — un seul plein par écran, le reste en liens soulignés ---------- */
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
-  text-transform:uppercase;letter-spacing:.1em;padding:13px 20px;border:var(--bd);
+  text-transform:uppercase;letter-spacing:.1em;padding:14px 22px;border:0;
   background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
   transition:transform .18s var(--ease),box-shadow .18s var(--ease)}
-.btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--red)}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--yellow)}
 .btn .ar{transition:transform .18s var(--ease)}
 .btn:hover .ar{transform:translateX(4px)}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{box-shadow:4px 4px 0 var(--blue)}
 nav .btn{padding:11px 16px}
+.lnk{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;border-bottom:2px solid var(--ink);padding-bottom:3px;
+  transition:color .2s,border-color .2s}
+.lnk:hover{color:#5a5a5a;border-color:var(--yellow)}
 
 /* ---------- HERO ---------- */
-.hero{display:grid;grid-template-columns:1fr;border-bottom:var(--bd)}
-@media(min-width:900px){.hero{grid-template-columns:1.15fr .85fr}}
-.hero-l{padding:60px 32px 54px;max-width:660px;margin-left:auto;width:100%}
-@media(min-width:900px){.hero-l{padding:70px 48px 66px}}
-.hero h1{font-size:clamp(40px,5.6vw,72px);font-weight:900;line-height:.96;letter-spacing:-.035em;margin:22px 0 0}
-.hero .sub{margin-top:24px;font-size:16px;line-height:1.55;max-width:44ch;color:#2b2b2b}
-.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
-.ver{margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5a5a5a}
+.hero{display:grid;grid-template-columns:1fr}
+@media(min-width:900px){.hero{grid-template-columns:1.1fr .9fr}}
+.hero-l{padding:66px 32px 60px;max-width:680px;margin-left:auto;width:100%}
+@media(min-width:900px){.hero-l{padding:80px 52px 74px}}
+.hero h1{font-size:clamp(40px,5.4vw,72px);font-weight:900;line-height:.96;letter-spacing:-.035em;margin:24px 0 0}
+.hero .sub{margin-top:24px;font-size:16.5px;line-height:1.55;max-width:44ch;color:#2b2b2b}
+.cta{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-top:34px}
+.ver{margin-top:22px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5a5a5a}
 
-.hero-r{background:var(--blue);position:relative;overflow:hidden;min-height:420px;border-left:var(--bd);
-  display:grid;place-items:center}
-@media(max-width:899px){.hero-r{border-left:0;border-top:var(--bd);min-height:340px}}
-.hero-r .circle{position:absolute;top:-90px;right:-70px;width:280px;height:280px;border-radius:50%;
+/* panneau : aplat encre qui saigne, aucune bordure */
+.hero-r{background:var(--panel);position:relative;overflow:hidden;min-height:480px;display:grid;place-items:center}
+@media(max-width:899px){.hero-r{min-height:420px}}
+.hero-r .circle{position:absolute;top:-110px;right:-80px;width:290px;height:290px;border-radius:50%;
   background:var(--yellow);animation:bob 9s ease-in-out infinite}
-/* centré : à gauche il chevaucherait la liste 01/02/03 */
-.hero-r .tri{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:0;
-  border-left:62px solid transparent;border-right:62px solid transparent;border-bottom:104px solid var(--red);
-  animation:slide 11s ease-in-out infinite}
-@keyframes bob{50%{transform:translateY(22px)}}
-@keyframes slide{50%{transform:translateX(-50%) translateY(-16px)}}
-.hero-r .icon{position:relative;z-index:2;width:132px;height:132px;border:var(--bd);background:var(--white);
-  display:grid;place-items:center;animation:bob2 7s ease-in-out infinite}
-.hero-r .icon img{width:100%;height:100%;object-fit:cover;display:block}
-@keyframes bob2{50%{transform:translateY(-12px)}}
+@keyframes bob{50%{transform:translateY(20px)}}
+.par{transition:translate .5s var(--ease)}
+
+/* ---------- EFFET SIGNATURE : une fenêtre, un champ, un bouton ----------
+   Le discours de l'app, littéralement : une URL s'écrit toute seule, puis
+   UN gros bouton se remplit de papier — le bouton EST la barre de progression.
+   Autour : rien. Le vide est le propos. */
+.dl{position:relative;z-index:2;width:min(390px,84%)}
+.dl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.dl-head span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8f8f8f}
+.dl-head .dot{width:7px;height:7px;background:var(--yellow);flex:none;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+
+.dl-field{background:#242424;padding:12px 13px;display:flex;align-items:center;min-height:42px}
+.dl-field .url{font-family:var(--mono);font-size:11px;letter-spacing:.01em;color:var(--paper);
+  white-space:nowrap;overflow:hidden}
+.dl-field .car{width:8px;height:14px;background:var(--yellow);flex:none;margin-left:2px;
+  animation:blink 1s steps(2) infinite}
+
+.dl-btn{position:relative;margin-top:14px;height:62px;background:#242424;overflow:hidden;
+  display:grid;place-items:center}
+.dl-btn .fill{position:absolute;left:0;top:0;bottom:0;width:var(--p,0%);background:var(--paper)}
+.dl-btn .lab{position:relative;z-index:2;font-family:var(--mono);font-size:14px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.16em}
+.dl-btn .base{color:var(--paper)}
+/* le libellé se retourne en encre là où le papier est passé — bord net, zéro fondu */
+.dl-btn .over{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;
+  color:var(--ink);clip-path:inset(0 calc(100% - var(--p,0%)) 0 0)}
+.dl-foot{display:flex;justify-content:space-between;margin-top:12px;gap:12px}
+.dl-foot span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:#8f8f8f;text-transform:uppercase}
+.dl-foot b{color:var(--paper);font-weight:400}
+
 .hero-r .rules{position:absolute;left:32px;bottom:26px;z-index:2}
 .hero-r .rules div{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--white);
   text-transform:uppercase;margin-bottom:7px}
+@media(max-width:560px){.hero-r .rules{display:none}}
 
-/* ---------- BANDEAU ---------- */
-.strip{display:flex;border-bottom:var(--bd);background:var(--paper);overflow-x:auto;scrollbar-width:none}
-.strip::-webkit-scrollbar{display:none}
-.strip .cell{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;
-  padding:16px 24px;border-right:var(--bd);white-space:nowrap;transition:background .4s var(--ease)}
-.strip .cell:last-child{border-right:0;flex:1}
-.strip .cell.on{background:var(--yellow)}
+/* ---------- TICKER — aplat plein, il remplace le bandeau à cellules ---------- */
+.ticker{background:var(--ink);color:var(--paper);overflow:hidden;padding:15px 0}
+.ticker .track{display:flex;width:max-content;animation:scrollx 32s linear infinite}
+.ticker b{font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;
+  letter-spacing:.14em;white-space:nowrap;display:flex;align-items:center;gap:38px;padding-right:38px}
+.ticker b::after{content:"";width:7px;height:7px;background:var(--yellow);flex:none}
+@keyframes scrollx{to{transform:translateX(-50%)}}
 
 /* ---------- SECTIONS ---------- */
-section{padding:60px 0}
-.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+section{padding:74px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;
+  border-top:2px solid var(--ink);padding-top:16px;margin-bottom:40px}
 .sec-head .note{font-family:var(--mono);font-size:12px;color:#3a3a3a;letter-spacing:.04em}
-h2{font-size:clamp(28px,4.2vw,50px);font-weight:900;line-height:.98;letter-spacing:-.03em}
+h2{font-size:clamp(30px,4.4vw,52px);font-weight:900;line-height:.98;letter-spacing:-.03em}
 .lead{font-size:16px;line-height:1.55;color:#3a3a3a;max-width:56ch;margin-top:12px}
 
-/* ---------- GRILLES (fond noir = filets de 2px) ----------
-   Nombre de colonnes explicite : une grille auto-fit laisserait
-   une case noire vide en fin de rangée. */
-.tiles{display:grid;grid-template-columns:1fr;gap:2px;background:var(--ink);border:var(--bd)}
-@media(min-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:980px){.tiles{grid-template-columns:repeat(3,1fr)}}
+/* ---------- TUILES — un filet en haut, pas de boîte ---------- */
+.tiles{display:grid;grid-template-columns:1fr;gap:0 44px}
+@media(min-width:700px){.tiles{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.tiles{grid-template-columns:repeat(3,1fr)}}
 .tiles.three{grid-template-columns:1fr}
-@media(min-width:760px){.tiles.three{grid-template-columns:repeat(3,1fr)}}
-.tile{background:var(--paper);padding:26px;position:relative;
-  transition:background .25s var(--ease),color .25s var(--ease)}
-.tile::before{content:"";position:absolute;left:0;top:0;height:100%;width:6px;background:var(--accent,var(--blue));
-  transform:scaleY(0);transform-origin:bottom;transition:transform .3s var(--ease)}
-.tile:hover::before{transform:scaleY(1)}
-.tile:hover{background:var(--ink);color:var(--paper)}
-.tile .ic{font-size:24px;margin-bottom:14px;display:block}
+@media(min-width:700px){.tiles.three{grid-template-columns:repeat(3,1fr)}}
+.tile{padding:20px 0 28px;border-top:2px solid var(--ink)}
+.tile .ic{font-size:22px;display:block;margin-bottom:12px}
 .tile h3{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
-.tile p{font-size:14px;line-height:1.5;color:#3a3a3a;transition:color .25s}
-.tile:hover p{color:#c9c9c9}
+.tile p{font-size:14px;line-height:1.5;color:#3a3a3a}
+.tile .bar{height:4px;width:0;background:var(--app);margin-top:14px;transition:width .35s var(--ease)}
+.tile:hover .bar{width:44px}
 
-/* ---------- ÉTAPES ---------- */
-.steps{display:grid;grid-template-columns:1fr;gap:2px;background:var(--ink);border:var(--bd)}
+/* ---------- ÉTAPES — gros chiffres, aucune carte ---------- */
+.steps{display:grid;grid-template-columns:1fr;gap:34px 44px}
 @media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{background:var(--paper);padding:26px;transition:background .25s var(--ease)}
-.step:hover{background:var(--yellow)}
-.step .n{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--red);margin-bottom:12px}
+.step .n{font-family:var(--mono);font-size:44px;font-weight:700;color:var(--app);line-height:1;margin-bottom:12px}
 .step h4{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
 .step p{font-size:13.5px;line-height:1.5;color:#3a3a3a}
 
-/* ---------- VITRINE : la tête de l'app ---------- */
+/* ---------- VITRINE — un aplat pose la scène, pas une fausse fenêtre ---------- */
 .show{display:grid;grid-template-columns:1fr;gap:40px;align-items:center}
 @media(min-width:900px){.show{grid-template-columns:1fr 1fr;gap:56px}}
-.mock{border:var(--bd);background:var(--white);width:100%;max-width:420px;margin:0 auto;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
-.mock:hover{transform:translate(-5px,-5px);box-shadow:8px 8px 0 var(--blue)}
-.mock-bar{display:flex;justify-content:flex-end;padding:8px 10px;border-bottom:var(--bd)}
-.mock-gear{width:22px;height:22px;border:var(--bd);display:grid;place-items:center;font-size:11px}
-.mock-stage{background:var(--paper);padding:20px 16px;text-align:center;border-bottom:var(--bd)}
-.mock-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+.stage{background:var(--paper-2);padding:28px 26px 26px;width:100%;max-width:430px;margin:0 auto}
+.stage-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mock-step{display:flex;align-items:center;gap:8px;margin:16px 0 14px}
-.node{width:30px;height:30px;border-radius:50%;border:var(--bd);background:var(--white);flex:none;
-  display:grid;place-items:center;font-size:12px;font-weight:700}
-.node.done{background:var(--blue);color:var(--white)}
+.stage-step{display:flex;align-items:center;gap:8px;margin:20px 0 14px}
+.node{width:30px;height:30px;border-radius:50%;background:#cdc9bc;flex:none;display:grid;place-items:center;
+  font-size:12px;font-weight:700;color:var(--ink)}
+.node.done{background:var(--ink);color:var(--paper)}
 .node.act{background:var(--yellow)}
-.conn{height:4px;flex:1;background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-.conn.on{background:var(--red)}
-.mock-status{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
-.mock-ctrl{padding:14px 16px}
-.mock-field{border:var(--bd);padding:9px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.02em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--paper)}
-.mock-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
-.mock-dest{font-size:13px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mock-dest small{display:block;font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:.08em;color:#5a5a5a}
-.mock-btns{display:flex;align-items:center;gap:8px;flex:none}
-.nb{border:var(--bd);display:grid;place-items:center;background:var(--white);font-weight:700}
-.nb.s{width:30px;height:30px;font-size:12px}
-.nb.b{width:44px;height:44px;font-size:18px;background:var(--red);color:var(--white)}
+.conn{height:4px;flex:1;background:#cdc9bc}
+.conn.on{background:var(--ink)}
+.stage-status{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.stage-field{margin-top:22px;background:var(--ink);color:var(--paper);padding:11px 12px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.stage-dest{font-size:13px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage-dest small{display:block;font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:.08em;color:#5a5a5a}
+.stage-btns{display:flex;align-items:center;gap:8px;flex:none}
+.nb{display:grid;place-items:center;font-weight:700}
+.nb.s{width:30px;height:30px;font-size:12px;background:var(--paper);color:var(--ink)}
+.nb.b{width:46px;height:46px;font-size:18px;background:var(--ink);color:var(--paper)}
 
-/* ---------- CTA FINALE ---------- */
-.final{border:var(--bd);background:var(--yellow);padding:56px 32px;text-align:center;position:relative;overflow:hidden}
-.final .sq1{position:absolute;top:-30px;left:-30px;width:110px;height:110px;background:var(--blue);
-  animation:rot 18s linear infinite}
-.final .sq2{position:absolute;bottom:-36px;right:-20px;width:0;height:0;border-left:56px solid transparent;
-  border-right:56px solid transparent;border-bottom:92px solid var(--red);animation:bob 8s ease-in-out infinite}
-@keyframes rot{to{transform:rotate(360deg)}}
-.final h2{position:relative;z-index:2}
-.final .lead{position:relative;z-index:2;margin:14px auto 28px;color:#2b2b2b;text-align:center}
-.final .cta{position:relative;z-index:2;justify-content:center}
-.final .fine{position:relative;z-index:2;margin:26px auto 0;max-width:62ch;font-family:var(--mono);font-size:10.5px;
-  line-height:1.7;letter-spacing:.04em;color:#2b2b2b}
+/* ---------- BLOC FINAL — un aplat, pas un rectangle bordé ---------- */
+.slab{background:var(--app);color:var(--paper);padding:70px 32px;text-align:center;position:relative;overflow:hidden}
+.slab .sq1{position:absolute;top:-40px;left:-30px;width:120px;height:120px;background:var(--yellow);
+  animation:spin 20s linear infinite}
+.slab .tri2{position:absolute;bottom:-30px;right:-10px;width:0;height:0;border-left:58px solid transparent;
+  border-right:58px solid transparent;border-bottom:96px solid var(--paper);opacity:.28;
+  animation:bob 8s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.slab h2,.slab .lead,.slab .cta,.slab .fine{position:relative;z-index:2}
+.slab .lead{margin:14px auto 30px;color:var(--paper);text-align:center;opacity:.85}
+.slab .cta{justify-content:center}
+.slab .btn{background:var(--paper);color:var(--ink)}
+.slab .btn:hover{box-shadow:4px 4px 0 var(--yellow)}
+.slab .fine{margin:30px auto 0;max-width:62ch;font-family:var(--mono);font-size:10.5px;line-height:1.7;
+  letter-spacing:.04em;color:#a5a5a5}
 
-/* ---------- FOOTER ---------- */
-footer{background:var(--ink);color:var(--paper);padding:56px 0 50px;margin-top:10px}
+/* ---------- FOOTER — aplat encre ---------- */
+footer{background:var(--ink);color:var(--paper);padding:66px 0 56px}
 .foot-in{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap}
-footer h2{font-size:clamp(28px,3.6vw,40px)}
+footer h2{font-size:clamp(28px,3.6vw,42px)}
 footer .mail{display:inline-block;margin-top:12px;color:var(--yellow);font-family:var(--mono);font-size:14px;
   border-bottom:2px solid transparent;transition:border-color .22s}
 footer .mail:hover{border-color:var(--yellow)}
@@ -200,11 +216,13 @@ footer .mail:hover{border-color:var(--yellow)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .js .rv{clip-path:none;transform:none}
+  /* le module reste lisible dans son état final : bouton rempli, « Terminé » */
+  .dl{--p:100%}
+  .dl-field .car{display:none}
 }
 </style>
 </head>
 <body>
-<div class="frame">
 
   <nav>
     <div class="wrap nav-in">
@@ -223,19 +241,29 @@ footer .mail:hover{border-color:var(--yellow)}
 
   <div class="hero" id="top">
     <div class="hero-l">
-      <p class="eyebrow" style="color:var(--blue)">MACOS 14+ · INTEL &amp; APPLE SILICON · GRATUIT</p>
+      <p class="eyebrow">MACOS 14+ · INTEL &amp; APPLE SILICON · GRATUIT</p>
       <h1>Video Downloader<br>Pro Plus 3000.</h1>
       <p class="sub">Colle un lien. Récupère la vidéo. <strong>C'est tout.</strong> Qualité maximale par défaut, conversion H265 quand il le faut — et rien d'autre à décider.</p>
       <div class="cta">
         <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger gratuitement <span class="ar">↓</span></a>
-        <a class="btn ghost" href="#how">Comment ça marche</a>
+        <a class="lnk" href="#how">Comment ça marche</a>
       </div>
       <p class="ver">Universel · Moteur mis à jour tout seul · Aucun réglage obligatoire</p>
     </div>
-    <div class="hero-r">
-      <div class="circle"></div>
-      <div class="tri"></div>
-      <div class="icon"><img src="icon.png" alt="Icône de l'app"></div>
+
+    <div class="hero-r" id="panel">
+      <div class="circle par" data-d="14"></div>
+      <!-- effet signature : un champ, un bouton, et le bouton EST la progression -->
+      <div class="dl par" data-d="-8" id="dl" aria-hidden="true">
+        <div class="dl-head"><span>UNE FENÊTRE · UN CHAMP · UN BOUTON</span><span class="dot"></span></div>
+        <div class="dl-field"><span class="url" id="url">https://www.youtube.com/watch?v=aqz-KE-bpKQ</span><span class="car"></span></div>
+        <div class="dl-btn" id="dlbtn">
+          <div class="fill"></div>
+          <span class="lab base" id="lab-base">Récupérer</span>
+          <span class="lab over" id="lab-over">Récupérer</span>
+        </div>
+        <div class="dl-foot"><span>AUCUN FORMAT À CHOISIR</span><span><b>MP4 · QUALITÉ MAX</b></span></div>
+      </div>
       <div class="rules">
         <div>01 / UN LIEN, UN BOUTON</div>
         <div>02 / QUALITÉ MAXIMALE</div>
@@ -244,57 +272,46 @@ footer .mail:hover{border-color:var(--yellow)}
     </div>
   </div>
 
-  <div class="strip" id="strip">
-    <div class="cell">MOTEUR · YT-DLP</div>
-    <div class="cell">CONVERSION · FFMPEG</div>
-    <div class="cell">ENCODEUR MATÉRIEL</div>
-    <div class="cell">SANS COMPTE · SANS PUB</div>
-    <div class="cell">UNIVERSEL</div>
+  <div class="ticker" aria-hidden="true">
+    <div class="track" id="track"><b>Moteur · yt-dlp</b><b>Conversion · FFmpeg</b><b>Encodeur matériel</b></div>
   </div>
 
   <section id="features" class="wrap">
     <div class="sec-head">
-      <div>
-        <p class="eyebrow rv" style="color:var(--red)">CE QU'ELLE SAIT FAIRE</p>
-        <h2 class="rv" style="margin-top:14px">Tout le nécessaire,<br>zéro fouillis.</h2>
-      </div>
+      <p class="eyebrow rv">CE QU'ELLE SAIT FAIRE</p>
       <p class="note rv">Une fenêtre, un champ, un bouton.</p>
     </div>
-    <div class="tiles rv">
-      <div class="tile" style="--accent:var(--blue)"><span class="ic">🎯</span><h3>Un lien, un bouton</h3><p>Le lien copié se colle tout seul quand tu reviens sur l'app. Le téléchargement démarre sans attendre l'analyse.</p></div>
-      <div class="tile" style="--accent:var(--red)"><span class="ic">🎬</span><h3>Qualité maximale</h3><p>Toujours la meilleure piste vidéo et la meilleure piste audio disponibles, fusionnées en MP4. Sans te poser la question.</p></div>
-      <div class="tile" style="--accent:var(--yellow)"><span class="ic">🧬</span><h3>H265 si nécessaire</h3><p>Les VP9/AV1 illisibles dans QuickTime sont ré-encodés via l'encodeur matériel du Mac. Le H264 propre, lui, reste intact.</p></div>
-      <div class="tile" style="--accent:var(--blue)"><span class="ic">🎵</span><h3>Audio seul</h3><p>Un second bouton, plus discret : la meilleure piste audio en M4A, sans ré-encodage inutile.</p></div>
-      <div class="tile" style="--accent:var(--red)"><span class="ic">✂️</span><h3>Juste un extrait</h3><p>Deux poignées pour choisir un passage — seuls les fragments nécessaires sont téléchargés, pas la vidéo entière.</p></div>
-      <div class="tile" style="--accent:var(--yellow)"><span class="ic">🔄</span><h3>Moteur toujours frais</h3><p>Elle s'appuie sur yt-dlp et vérifie sa version toute seule. Une mise à jour ? Un clic dans les réglages.</p></div>
+    <h2 class="rv" style="margin-bottom:44px">Tout le nécessaire,<br>zéro fouillis.</h2>
+    <div class="tiles">
+      <div class="tile rv"><span class="ic">🎯</span><h3>Un lien, un bouton</h3><p>Le lien copié se colle tout seul quand tu reviens sur l'app. Le téléchargement démarre sans attendre l'analyse.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🎬</span><h3>Qualité maximale</h3><p>Toujours la meilleure piste vidéo et la meilleure piste audio disponibles, fusionnées en MP4. Sans te poser la question.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🧬</span><h3>H265 si nécessaire</h3><p>Les VP9/AV1 illisibles dans QuickTime sont ré-encodés via l'encodeur matériel du Mac. Le H264 propre, lui, reste intact.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🎵</span><h3>Audio seul</h3><p>Un second bouton, plus discret : la meilleure piste audio en M4A, sans ré-encodage inutile.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">✂️</span><h3>Juste un extrait</h3><p>Deux poignées pour choisir un passage — seuls les fragments nécessaires sont téléchargés, pas la vidéo entière.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🔄</span><h3>Moteur toujours frais</h3><p>Elle s'appuie sur yt-dlp et vérifie sa version toute seule. Une mise à jour ? Un clic dans les réglages.</p><div class="bar"></div></div>
     </div>
   </section>
 
   <section id="showcase" class="wrap" style="padding-top:0">
     <div class="show">
       <div>
-        <p class="eyebrow rv" style="color:var(--blue)">L'INTERFACE</p>
+        <p class="eyebrow rv">L'INTERFACE</p>
         <h2 class="rv" style="margin-top:14px">Tu vois<br>où ça en est.</h2>
         <p class="lead rv">Pas de journal technique, pas de fenêtre qui s'empile. Une carte t'annonce l'étape en cours — analyse, téléchargement, conversion — et le gros bouton porte la progression. Rien de plus.</p>
       </div>
       <div class="rv">
-        <div class="mock">
-          <div class="mock-bar"><div class="mock-gear">⚙</div></div>
-          <div class="mock-stage">
-            <div class="mock-title">Big Buck Bunny — Blender Foundation</div>
-            <div class="mock-step">
-              <div class="node done">✓</div><div class="conn on"></div>
-              <div class="node act">↓</div><div class="conn"></div>
-              <div class="node">✦</div>
-            </div>
-            <div class="mock-status">Téléchargement · 62 %</div>
+        <div class="stage" aria-hidden="true">
+          <div class="stage-title">Big Buck Bunny — Blender Foundation</div>
+          <div class="stage-step">
+            <div class="node done">✓</div><div class="conn on"></div>
+            <div class="node act">↓</div><div class="conn"></div>
+            <div class="node">✦</div>
           </div>
-          <div class="mock-ctrl">
-            <div class="mock-field">🔗 https://www.youtube.com/watch?v=aqz-KE-bpKQ</div>
-            <div class="mock-row">
-              <div class="mock-dest">Téléchargements<small>~/Users/toi</small></div>
-              <div class="mock-btns"><div class="nb s">♫</div><div class="nb b">↓</div></div>
-            </div>
+          <div class="stage-status">Téléchargement · 62 %</div>
+          <div class="stage-field">🔗 https://www.youtube.com/watch?v=aqz-KE-bpKQ</div>
+          <div class="stage-row">
+            <div class="stage-dest">Téléchargements<small>~/Users/toi</small></div>
+            <div class="stage-btns"><div class="nb s">♫</div><div class="nb b">↓</div></div>
           </div>
         </div>
       </div>
@@ -303,47 +320,41 @@ footer .mail:hover{border-color:var(--yellow)}
 
   <section id="how" class="wrap" style="padding-top:0">
     <div class="sec-head">
-      <div>
-        <p class="eyebrow rv" style="color:var(--red)">EN TROIS TEMPS</p>
-        <h2 class="rv" style="margin-top:14px">Colle. Clique.<br>C'est fini.</h2>
-      </div>
+      <p class="eyebrow rv">EN TROIS TEMPS</p>
       <p class="note rv">Aucun format à choisir, aucun codec à comprendre.</p>
     </div>
-    <div class="steps rv">
-      <div class="step"><div class="n">01</div><h4>Colle le lien</h4><p>Ou ne fais rien : s'il est déjà dans ton presse-papier, l'app le prend au vol quand tu reviens dessus.</p></div>
-      <div class="step"><div class="n">02</div><h4>Clique sur la flèche</h4><p>Vidéo entière ou extrait, image ou audio seul. Un clic, et la carte t'annonce chaque étape.</p></div>
-      <div class="step"><div class="n">03</div><h4>Récupère ton fichier</h4><p>Il t'attend dans ton dossier, en qualité maximale et lisible partout. Le Finder s'ouvre dessus tout seul.</p></div>
+    <h2 class="rv" style="margin-bottom:44px">Colle. Clique.<br>C'est fini.</h2>
+    <div class="steps">
+      <div class="step rv"><div class="n">01</div><h4>Colle le lien</h4><p>Ou ne fais rien : s'il est déjà dans ton presse-papier, l'app le prend au vol quand tu reviens dessus.</p></div>
+      <div class="step rv"><div class="n">02</div><h4>Clique sur la flèche</h4><p>Vidéo entière ou extrait, image ou audio seul. Un clic, et la carte t'annonce chaque étape.</p></div>
+      <div class="step rv"><div class="n">03</div><h4>Récupère ton fichier</h4><p>Il t'attend dans ton dossier, en qualité maximale et lisible partout. Le Finder s'ouvre dessus tout seul.</p></div>
     </div>
   </section>
 
   <section id="honest" class="wrap" style="padding-top:0">
     <div class="sec-head">
-      <div>
-        <p class="eyebrow rv" style="color:var(--blue)">HONNÊTE</p>
-        <h2 class="rv" style="margin-top:14px">Elle te dit ce<br>dont elle a besoin.</h2>
-      </div>
+      <p class="eyebrow rv">HONNÊTE</p>
       <p class="note rv">Rien ne se télécharge sans ton accord.</p>
     </div>
-    <p class="lead rv" style="margin-bottom:32px">Au premier lancement, l'app annonce les outils libres qu'elle utilise — yt-dlp, ffmpeg, ffprobe — leur rôle et leur poids exact. Tout est rangé dans son coin, sans rien installer sur ton système.</p>
-    <div class="tiles three rv">
-      <div class="tile" style="--accent:var(--red)"><span class="ic">🔒</span><h3>Rien en douce</h3><p>Tu valides les téléchargements, tu vois la progression. Aucun installeur, aucun mot de passe, aucun Homebrew requis.</p></div>
-      <div class="tile" style="--accent:var(--yellow)"><span class="ic">🧹</span><h3>Annuler ne laisse rien</h3><p>Les fichiers en cours vivent à l'écart. Tu annules ? Ton dossier reste propre, comme si rien ne s'était passé.</p></div>
-      <div class="tile" style="--accent:var(--blue)"><span class="ic">🏔️</span><h3>Autonome</h3><p>Binaire universel Intel + Apple Silicon. Elle embarque son moteur et le tient à jour elle-même.</p></div>
+    <h2 class="rv" style="margin-bottom:20px">Elle te dit ce<br>dont elle a besoin.</h2>
+    <p class="lead rv" style="margin-bottom:40px">Au premier lancement, l'app annonce les outils libres qu'elle utilise — yt-dlp, ffmpeg, ffprobe — leur rôle et leur poids exact. Tout est rangé dans son coin, sans rien installer sur ton système.</p>
+    <div class="tiles three">
+      <div class="tile rv"><span class="ic">🔒</span><h3>Rien en douce</h3><p>Tu valides les téléchargements, tu vois la progression. Aucun installeur, aucun mot de passe, aucun Homebrew requis.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🧹</span><h3>Annuler ne laisse rien</h3><p>Les fichiers en cours vivent à l'écart. Tu annules ? Ton dossier reste propre, comme si rien ne s'était passé.</p><div class="bar"></div></div>
+      <div class="tile rv"><span class="ic">🏔️</span><h3>Autonome</h3><p>Binaire universel Intel + Apple Silicon. Elle embarque son moteur et le tient à jour elle-même.</p><div class="bar"></div></div>
     </div>
   </section>
 
-  <section class="wrap" style="padding-top:0">
-    <div class="final rv">
-      <div class="sq1"></div>
-      <div class="sq2"></div>
-      <h2>Prête quand tu l'es.</h2>
-      <p class="lead">Gratuite, sans compte, sans pub, sans mouchard.</p>
-      <div class="cta">
-        <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger pour macOS <span class="ar">↓</span></a>
-      </div>
-      <p class="fine">yt-dlp et ffmpeg sont des projets libres tiers, téléchargés depuis leurs sources officielles. Télécharge uniquement des contenus que tu as le droit de récupérer.</p>
+  <div class="slab">
+    <div class="sq1"></div>
+    <div class="tri2"></div>
+    <h2>Prête quand tu l'es.</h2>
+    <p class="lead">Gratuite, sans compte, sans pub, sans mouchard.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger pour macOS <span class="ar">↓</span></a>
     </div>
-  </section>
+    <p class="fine">yt-dlp et ffmpeg sont des projets libres tiers, téléchargés depuis leurs sources officielles. Télécharge uniquement des contenus que tu as le droit de récupérer.</p>
+  </div>
 
   <footer>
     <div class="wrap foot-in">
@@ -359,9 +370,12 @@ footer .mail:hover{border-color:var(--yellow)}
     </div>
   </footer>
 
-</div>
-
 <script>
+/* Ticker : dupliqué pour une boucle sans couture */
+const words=["Moteur · yt-dlp","Conversion · FFmpeg","Encodeur matériel","Sans compte · sans pub",
+             "Binaire universel","Audio seul · M4A","Extraits à la volée"];
+document.getElementById('track').innerHTML=words.map(w=>`<b>${w}</b>`).join('').repeat(2);
+
 /* Révélation au scroll — volet net, en cascade.
    Vérification directe au scroll/resize plutôt qu'IntersectionObserver :
    une poignée d'éléments, c'est gratuit, et ça ne peut pas laisser la
@@ -380,16 +394,56 @@ addEventListener('resize',reveal);
 addEventListener('load',reveal);
 requestAnimationFrame(reveal);
 
-/* Bandeau : la cellule jaune se déplace de cellule en cellule */
-const cells=[...document.querySelectorAll('#strip .cell')];
-let ci=0;
-function tickStrip(){
-  cells.forEach(c=>c.classList.remove('on'));
-  cells[ci].classList.add('on');
-  ci=(ci+1)%cells.length;
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* Effet signature : l'URL s'écrit, le bouton se remplit de papier,
+   son libellé devient le pourcentage, puis « Terminé ». Et ça repart. */
+const dl=document.getElementById('dl');
+const url=document.getElementById('url');
+const labs=[document.getElementById('lab-base'),document.getElementById('lab-over')];
+const URL_TXT='https://www.youtube.com/watch?v=aqz-KE-bpKQ';
+function setLab(t){labs.forEach(l=>l.textContent=t)}
+function setP(p){dl.style.setProperty('--p',p+'%')}
+
+if(reduce){
+  /* état final, lisible : URL complète, bouton rempli, « Terminé » */
+  url.textContent=URL_TXT;setLab('Terminé');setP(100);
+}else{
+  let t=null;
+  const wait=(ms,fn)=>t=setTimeout(fn,ms);
+  function type(i){
+    url.textContent=URL_TXT.slice(0,i);
+    if(i<URL_TXT.length) wait(38,()=>type(i+1));
+    else wait(600,()=>grow(0));
+  }
+  function grow(p){
+    setP(p);setLab(p+' %');
+    if(p<100) wait(28,()=>grow(p+2));
+    else wait(320,done);
+  }
+  function done(){
+    setLab('Terminé');
+    wait(1900,()=>{setP(0);setLab('Récupérer');url.textContent='';wait(700,()=>type(1))});
+  }
+  setP(0);setLab('Récupérer');url.textContent='';
+  wait(500,()=>type(1));
 }
-tickStrip();
-if(!matchMedia('(prefers-reduced-motion:reduce)').matches) setInterval(tickStrip,2200);
+
+/* Parallaxe : les formes suivent le pointeur, chacune à sa profondeur */
+const panel=document.getElementById('panel');
+if(!reduce){
+  panel.addEventListener('pointermove',e=>{
+    const r=panel.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    panel.querySelectorAll('.par').forEach(el=>{
+      const d=+el.dataset.d;
+      el.style.translate=`${x*d}px ${y*d}px`;
+    });
+  });
+  panel.addEventListener('pointerleave',()=>{
+    panel.querySelectorAll('.par').forEach(el=>el.style.translate='0px 0px');
+  });
+}
 </script>
 </body>
 </html>
