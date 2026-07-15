@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Downloader Pro Plus 3000 — STUPIDS STUDIO</title>
+<meta name="description" content="Colle un lien, récupère la vidéo. App macOS minimaliste posée sur yt-dlp : qualité maximale, conversion H265 si nécessaire, audio seul, extraits. Gratuite et autonome.">
+<link rel="icon" href="icon.png">
+<meta property="og:title" content="Video Downloader Pro Plus 3000">
+<meta property="og:description" content="Colle un lien. Récupère la vidéo. C'est tout.">
+<meta property="og:image" content="icon.png">
+<meta name="theme-color" content="#06070e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2b8cff; --indigo:#6d4bff; --violet:#a14bff; --cyan:#28e0d6;
+  --ink:#eef1ff; --muted:#9aa6cf; --bg:#05060d;
+  --glass:rgba(255,255,255,.045); --stroke:rgba(255,255,255,.10);
+  --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:var(--bg);color:var(--ink);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.55}
+h1,h2,h3,.studio{font-family:"Space Grotesk","Inter",sans-serif}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(109,75,255,.4)}
+
+/* ---------- Backdrop ---------- */
+.backdrop{position:fixed;inset:0;z-index:-4;overflow:hidden;background:
+  radial-gradient(1100px 720px at 72% -8%,rgba(109,75,255,.20),transparent 60%),
+  radial-gradient(900px 620px at 8% 6%,rgba(43,140,255,.16),transparent 60%),
+  radial-gradient(700px 600px at 50% 110%,rgba(40,224,214,.10),transparent 60%),var(--bg)}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;mix-blend-mode:screen;animation:float 22s ease-in-out infinite}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#2b8cff,transparent 70%);top:-140px;left:-100px}
+.b2{width:640px;height:640px;background:radial-gradient(circle,#a14bff,transparent 70%);top:14%;right:-180px;animation-delay:-7s}
+.b3{width:520px;height:520px;background:radial-gradient(circle,#6d4bff,transparent 70%);bottom:-160px;left:28%;animation-delay:-13s}
+.b4{width:420px;height:420px;background:radial-gradient(circle,#28e0d6,transparent 70%);top:46%;left:40%;opacity:.32;animation-delay:-4s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(70px,-55px) scale(1.14)}66%{transform:translate(-50px,45px) scale(.9)}}
+.grid-ov{position:fixed;inset:0;z-index:-3;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:58px 58px;
+  -webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 78%);
+          mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 78%)}
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+#spot{position:fixed;width:560px;height:560px;left:0;top:0;z-index:-1;pointer-events:none;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(124,108,255,.16),transparent 62%);transition:opacity .4s;opacity:0}
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;
+  background:linear-gradient(90deg,var(--blue),var(--violet),var(--cyan));box-shadow:0 0 12px rgba(109,75,255,.8)}
+
+/* ---------- Nav ---------- */
+nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,4vw,40px);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+  background:rgba(7,8,16,.5);border-bottom:1px solid var(--stroke)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.2px}
+.brand img{width:32px;height:32px;border-radius:9px;box-shadow:0 4px 18px rgba(109,75,255,.55)}
+.brand span{font-size:15px}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;font-size:14px;font-weight:600;
+  border:1px solid var(--stroke);background:var(--glass);transition:.28s cubic-bezier(.2,.7,.3,1);cursor:pointer;white-space:nowrap;
+  backdrop-filter:blur(8px)}
+.btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.09)}
+.btn-primary{position:relative;border:none;color:#fff;overflow:hidden;
+  background:linear-gradient(120deg,var(--blue),var(--indigo),var(--violet),var(--blue));background-size:280% 100%;
+  box-shadow:0 8px 32px rgba(109,75,255,.5);animation:shimmer 7s linear infinite}
+.btn-primary:hover{box-shadow:0 12px 40px rgba(109,75,255,.7);transform:translateY(-3px)}
+@keyframes shimmer{to{background-position:280% 0}}
+.btn-lg{padding:15px 28px;font-size:15.5px;border-radius:14px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;text-align:center;padding:clamp(60px,11vh,120px) 20px 70px;max-width:980px;margin:0 auto}
+.hero-icon-wrap{position:relative;width:148px;height:148px;margin:0 auto 30px;perspective:700px}
+.hero-icon{width:148px;height:148px;border-radius:33px;display:block;
+  box-shadow:0 30px 80px rgba(109,75,255,.5),0 8px 24px rgba(0,0,0,.5);
+  animation:bob 6s ease-in-out infinite;will-change:transform}
+.hero-icon-wrap::after{content:"";position:absolute;inset:-30px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(124,108,255,.5),transparent 65%);filter:blur(22px);animation:pulse 4.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;font-size:13px;color:var(--muted);
+  border:1px solid var(--stroke);background:var(--glass);backdrop-filter:blur(8px);margin-bottom:22px}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:#36e07a;box-shadow:0 0 10px #36e07a;animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.4}}
+h1{font-size:clamp(40px,7vw,76px);line-height:1.02;font-weight:700;letter-spacing:-1.5px;margin-bottom:22px}
+.grad{background:linear-gradient(120deg,#6db6ff,#a14bff 45%,#28e0d6);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 8s linear infinite}
+@keyframes flow{to{background-position:200% 0}}
+.tag{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:640px;margin:0 auto 34px}
+.tag b{color:var(--ink);font-weight:600}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.req{margin-top:20px;font-size:13px;color:var(--muted)}
+
+/* ---------- Sections ---------- */
+section{max-width:1080px;margin:0 auto;padding:clamp(60px,9vh,100px) clamp(16px,4vw,28px)}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;margin-bottom:14px}
+section h2{font-size:clamp(28px,4.4vw,44px);text-align:center;letter-spacing:-.8px;line-height:1.1;font-weight:700}
+.sub{text-align:center;color:var(--muted);max-width:620px;margin:16px auto 0;font-size:16.5px}
+
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:48px}
+.card{position:relative;padding:26px 24px;border-radius:var(--radius);border:1px solid var(--stroke);
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(10px);
+  overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.3,1),border-color .35s,box-shadow .35s}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .4s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(124,108,255,.18),transparent 45%)}
+.card:hover{transform:translateY(-6px);border-color:rgba(124,108,255,.4);box-shadow:0 24px 60px rgba(20,10,60,.6)}
+.card:hover::before{opacity:1}
+.ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:26px;margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(43,140,255,.25),rgba(161,75,255,.25));border:1px solid var(--stroke)}
+.card h3{font-size:18.5px;margin-bottom:8px;font-weight:600}
+.card p{color:var(--muted);font-size:14.5px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:54px;counter-reset:s}
+.step{position:relative;padding:28px 24px 24px;border-radius:var(--radius);border:1px solid var(--stroke);
+  background:var(--glass);backdrop-filter:blur(10px);transition:transform .35s,border-color .35s}
+.step:hover{transform:translateY(-5px);border-color:rgba(124,108,255,.35)}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:42px;height:42px;border-radius:12px;
+  display:grid;place-items:center;font-family:"Space Grotesk";font-weight:700;font-size:18px;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--violet));box-shadow:0 8px 22px rgba(109,75,255,.55)}
+.step h3{margin:14px 0 8px;font-size:18px}
+.step p{color:var(--muted);font-size:14.5px}
+
+/* showcase */
+.showcase{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:860px){.showcase{grid-template-columns:1fr}}
+.showcase .txt h2,.showcase .txt .eyebrow,.showcase .txt .sub{text-align:left;margin-left:0}
+
+/* --- maquette néomorphique : la vraie tête de l'app --- */
+.neu{--pearl:#e1e7ef;--ncard:#edf1f6;--nshadow:#adb8c9;--ntext:#3a4556;--nsec:#8490a3;--nacc:#0066ff;
+  background:var(--pearl);border-radius:22px;padding:16px;width:100%;max-width:400px;margin:0 auto;
+  box-shadow:0 40px 90px rgba(5,8,30,.75),0 0 0 1px rgba(255,255,255,.08);
+  transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.neu:hover{transform:translateY(-6px) rotateX(2deg)}
+.neu-bar{display:flex;justify-content:flex-end;margin-bottom:10px}
+.neu-gear{width:26px;height:26px;border-radius:50%;background:var(--ncard);display:grid;place-items:center;font-size:11px;
+  box-shadow:-2px -2px 5px #fff,3px 3px 6px var(--nshadow);color:var(--nacc)}
+.neu-stage{background:var(--pearl);border-radius:16px;padding:14px 12px;text-align:center;
+  box-shadow:inset 3px 3px 6px var(--nshadow),inset -3px -3px 6px #fff}
+.neu-title{font-size:10.5px;font-weight:600;color:var(--ntext);margin-bottom:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.neu-step{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:9px}
+.node{width:30px;height:30px;border-radius:50%;background:var(--ncard);display:grid;place-items:center;font-size:11px;
+  box-shadow:-2px -2px 4px #fff,3px 3px 5px var(--nshadow);color:var(--nsec);flex:none}
+.node.done{background:linear-gradient(135deg,#0066ff,#00c6ff);color:#fff}
+.node.act{color:var(--nacc);box-shadow:-2px -2px 4px #fff,3px 3px 5px var(--nshadow),0 0 0 2px rgba(0,102,255,.25)}
+.conn{height:3px;flex:1;border-radius:2px;background:rgba(173,184,201,.5)}
+.conn.on{background:linear-gradient(90deg,#0066ff,#00c6ff)}
+.neu-status{font-size:10px;font-weight:700;color:var(--nacc)}
+.neu-ctrl{background:var(--ncard);border-radius:16px;padding:12px;margin-top:12px;
+  box-shadow:-4px -4px 9px rgba(255,255,255,.9),5px 5px 11px var(--nshadow)}
+.neu-field{background:var(--pearl);border-radius:9px;padding:7px 10px;font-size:9.5px;color:var(--nsec);
+  box-shadow:inset 2px 2px 4px var(--nshadow),inset -2px -2px 4px #fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.neu-row{display:flex;align-items:center;justify-content:space-between;margin-top:11px;gap:8px}
+.neu-dest{font-size:10px;color:var(--ntext);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.neu-dest small{display:block;font-size:8.5px;color:var(--nsec);font-weight:400}
+.neu-btns{display:flex;align-items:center;gap:9px;flex:none}
+.nb{border-radius:50%;background:var(--ncard);display:grid;place-items:center;color:var(--nacc);
+  box-shadow:-3px -3px 6px #fff,4px 4px 8px var(--nshadow)}
+.nb.s{width:30px;height:30px;font-size:12px}
+.nb.b{width:44px;height:44px;font-size:17px;font-weight:700}
+
+/* band */
+.band{position:relative;max-width:1080px;margin:30px auto;padding:64px 24px;border-radius:26px;text-align:center;overflow:hidden;
+  border:1px solid var(--stroke);background:linear-gradient(135deg,rgba(43,140,255,.16),rgba(161,75,255,.16));backdrop-filter:blur(12px)}
+.band::before{content:"";position:absolute;inset:0;background:radial-gradient(700px circle at 50% -20%,rgba(124,108,255,.35),transparent 60%)}
+.band>*{position:relative}
+.band h2{font-size:clamp(26px,4vw,40px)}
+.note{margin-top:18px;font-size:12.5px;color:var(--muted);max-width:600px;margin:18px auto 0}
+
+/* footer */
+footer{text-align:center;padding:60px 20px 50px;border-top:1px solid var(--stroke);margin-top:40px}
+.studio{font-size:22px;font-weight:700;background:linear-gradient(120deg,#6db6ff,#a14bff);-webkit-background-clip:text;background-clip:text;color:transparent;margin:8px 0}
+.foot-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:18px 0;font-size:14px}
+.foot-links a{color:var(--muted);transition:.2s}.foot-links a:hover{color:var(--ink)}
+.copy{font-size:12.5px;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="backdrop"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+<div class="grid-ov"></div>
+<canvas id="stars"></canvas>
+<div id="spot"></div>
+<div id="prog"></div>
+
+<nav>
+  <a class="brand" href="#top"><img src="icon.png" alt=""><span>Video Downloader</span></a>
+  <div class="nav-actions">
+    <a class="btn" href="https://github.com/sandrophoto" target="_blank" rel="noopener">STUPIDS STUDIO</a>
+    <a class="btn btn-primary" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-icon-wrap"><img class="hero-icon" src="icon.png" alt="Icône de l'app"></div>
+  <div class="chip"><span class="dot"></span> macOS 14+ · Intel &amp; Apple Silicon · Gratuit</div>
+  <h1>Video Downloader<br><span class="grad">Pro Plus 3000</span></h1>
+  <p class="tag">Colle un lien. Récupère la vidéo. <b>C'est tout.</b> Qualité maximale par défaut, conversion H265 quand il le faut — et rien d'autre à décider. 🏔️</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary btn-lg" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">↓ Télécharger gratuitement</a>
+    <a class="btn btn-lg" href="#how">Comment ça marche</a>
+  </div>
+  <div class="req">Universel · Moteur mis à jour tout seul · Aucun réglage obligatoire</div>
+</header>
+
+<section id="features">
+  <div class="eyebrow reveal">Ce qu'elle sait faire</div>
+  <h2 class="reveal">Tout le nécessaire, <span class="grad">zéro fouillis</span></h2>
+  <p class="sub reveal">Une fenêtre, un champ, un bouton. Les détails vivent dans les réglages — pas sous tes yeux.</p>
+  <div class="grid">
+    <div class="card reveal"><div class="ic">🎯</div><h3>Un lien, un bouton</h3><p>Le lien copié se colle tout seul quand tu reviens sur l'app. Le téléchargement démarre sans attendre l'analyse.</p></div>
+    <div class="card reveal d1"><div class="ic">🎬</div><h3>Qualité maximale</h3><p>Toujours la meilleure piste vidéo et la meilleure piste audio disponibles, fusionnées en MP4. Sans te poser la question.</p></div>
+    <div class="card reveal d2"><div class="ic">🧬</div><h3>H265 si nécessaire</h3><p>Les VP9/AV1 illisibles dans QuickTime sont ré-encodés via l'encodeur matériel du Mac. Le H264 propre, lui, reste intact.</p></div>
+    <div class="card reveal"><div class="ic">🎵</div><h3>Audio seul</h3><p>Un second bouton, plus discret : la meilleure piste audio en M4A, sans ré-encodage inutile.</p></div>
+    <div class="card reveal d1"><div class="ic">✂️</div><h3>Juste un extrait</h3><p>Deux poignées pour choisir un passage — seuls les fragments nécessaires sont téléchargés, pas la vidéo entière.</p></div>
+    <div class="card reveal d2"><div class="ic">🔄</div><h3>Moteur toujours frais</h3><p>Elle s'appuie sur yt-dlp et vérifie sa version toute seule. Une mise à jour ? Un clic dans les réglages.</p></div>
+  </div>
+</section>
+
+<section id="showcase">
+  <div class="showcase">
+    <div class="txt">
+      <div class="eyebrow reveal">L'interface</div>
+      <h2 class="reveal">Tu vois <span class="grad">où ça en est</span></h2>
+      <p class="sub reveal">Pas de journal technique, pas de fenêtre qui s'empile. Une carte t'annonce l'étape en cours — analyse, téléchargement, conversion — et le gros bouton porte la progression. Rien de plus.</p>
+    </div>
+    <div class="reveal d1">
+      <div class="neu">
+        <div class="neu-bar"><div class="neu-gear">⚙</div></div>
+        <div class="neu-stage">
+          <div class="neu-title">Big Buck Bunny — Blender Foundation</div>
+          <div class="neu-step">
+            <div class="node done">✓</div><div class="conn on"></div>
+            <div class="node act">↓</div><div class="conn"></div>
+            <div class="node">✦</div>
+          </div>
+          <div class="neu-status">Téléchargement · 62 %</div>
+        </div>
+        <div class="neu-ctrl">
+          <div class="neu-field">🔗 https://www.youtube.com/watch?v=aqz-KE-bpKQ</div>
+          <div class="neu-row">
+            <div class="neu-dest">Téléchargements<small>~/Users/toi</small></div>
+            <div class="neu-btns"><div class="nb s">♫</div><div class="nb b">↓</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="eyebrow reveal">En trois temps</div>
+  <h2 class="reveal">Colle. Clique. <span class="grad">C'est fini.</span></h2>
+  <p class="sub reveal">Aucun format à choisir, aucun codec à comprendre. L'app décide bien — et tu peux toujours la contredire dans les réglages.</p>
+  <div class="steps">
+    <div class="step reveal"><h3>Colle le lien</h3><p>Ou ne fais rien : s'il est déjà dans ton presse-papier, l'app le prend au vol quand tu reviens dessus.</p></div>
+    <div class="step reveal d1"><h3>Clique sur la flèche</h3><p>Vidéo entière ou extrait, image ou audio seul. Un clic, et la carte t'annonce chaque étape.</p></div>
+    <div class="step reveal d2"><h3>Récupère ton fichier</h3><p>Il t'attend dans ton dossier, en qualité maximale et lisible partout. Le Finder s'ouvre dessus tout seul.</p></div>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="eyebrow reveal">Honnête</div>
+  <h2 class="reveal">Elle te dit ce dont elle <span class="grad">a besoin</span></h2>
+  <p class="sub reveal">Au premier lancement, l'app annonce les outils libres qu'elle utilise — yt-dlp, ffmpeg, ffprobe — leur rôle et leur poids exact. Rien ne se télécharge sans ton accord, et tout est rangé dans son coin, sans rien installer sur ton système.</p>
+  <div class="grid">
+    <div class="card reveal"><div class="ic">🔒</div><h3>Rien en douce</h3><p>Tu valides les téléchargements, tu vois la progression. Aucun installeur, aucun mot de passe, aucun Homebrew requis.</p></div>
+    <div class="card reveal d1"><div class="ic">🧹</div><h3>Annuler ne laisse rien</h3><p>Les fichiers en cours vivent à l'écart. Tu annules ? Ton dossier reste propre, comme si rien ne s'était passé.</p></div>
+    <div class="card reveal d2"><div class="ic">🏔️</div><h3>Autonome</h3><p>Binaire universel Intel + Apple Silicon. Elle embarque son moteur et le tient à jour elle-même.</p></div>
+  </div>
+</section>
+
+<div class="band reveal">
+  <h2>Prête quand tu l'es.</h2>
+  <p class="sub" style="margin-top:14px">Gratuite, sans compte, sans pub, sans mouchard.</p>
+  <div class="hero-cta" style="margin-top:26px">
+    <a class="btn btn-primary btn-lg" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">↓ Télécharger pour macOS</a>
+  </div>
+  <p class="note">yt-dlp et ffmpeg sont des projets libres tiers, téléchargés depuis leurs sources officielles. Télécharge uniquement des contenus que tu as le droit de récupérer.</p>
+</div>
+
+<footer><div>
+  <div class="studio">STUPIDS STUDIO</div>
+  <div class="foot-links">
+    <a href="https://sandrophoto.github.io/">Toutes les apps</a>
+    <a href="https://github.com/sandrophoto" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://stupidstudio.eu" target="_blank" rel="noopener">stupidstudio.eu</a>
+  </div>
+  <div class="copy">© 2026 STUPIDS STUDIO — Tous droits réservés.</div>
+</div></footer>
+
+<script>
+  // reveal au scroll
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // reflet du curseur sur les cartes
+  document.querySelectorAll('.card').forEach(el=>{
+    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();
+      el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px');});
+  });
+
+  // spotlight
+  const spot=document.getElementById('spot');
+  addEventListener('mousemove',e=>{spot.style.opacity=1;spot.style.left=e.clientX+'px';spot.style.top=e.clientY+'px';});
+  addEventListener('mouseleave',()=>spot.style.opacity=0);
+
+  // barre de progression de lecture
+  const prog=document.getElementById('prog');
+  addEventListener('scroll',()=>{const h=document.documentElement;
+    prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+  // particules
+  const cv=document.getElementById('stars'),cx=cv.getContext('2d');let W,H,ps;
+  function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight;
+    ps=Array.from({length:Math.min(70,Math.floor(W/26))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.7+.3,vy:Math.random()*.35+.06,a:Math.random()*.5+.2}));}
+  rsz();addEventListener('resize',rsz);
+  (function tick(){cx.clearRect(0,0,W,H);for(const p of ps){p.y-=p.vy;if(p.y<-4){p.y=H+4;p.x=Math.random()*W}
+    cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fillStyle=`rgba(150,180,255,${p.a})`;cx.fill();}
+    requestAnimationFrame(tick);})();
+</script>
+</body>
+</html>
