@@ -157,29 +157,63 @@ h2{font-size:clamp(30px,4.4vw,52px);font-weight:900;line-height:.98;letter-spaci
 .step h4{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
 .step p{font-size:13.5px;line-height:1.5;color:#3a3a3a}
 
-/* ---------- VITRINE — un aplat pose la scène, pas une fausse fenêtre ---------- */
-.show{display:grid;grid-template-columns:1fr;gap:40px;align-items:center}
-@media(min-width:900px){.show{grid-template-columns:1fr 1fr;gap:56px}}
-.stage{background:var(--paper-2);padding:28px 26px 26px;width:100%;max-width:430px;margin:0 auto}
-.stage-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.stage-step{display:flex;align-items:center;gap:8px;margin:20px 0 14px}
-.node{width:30px;height:30px;border-radius:50%;background:#cdc9bc;flex:none;display:grid;place-items:center;
-  font-size:12px;font-weight:700;color:var(--ink)}
+/* ---------- L'APP ----------
+   Maquette de la fenêtre réelle (440 pt de large) : mêmes libellés, même ordre
+   qu'à l'écran — la carte d'étapes en haut, la carte de contrôle en dessous.
+   Rendue en aplats plutôt qu'en capture : pas de bordure, pas d'arrondi.
+   Pendant le travail l'app estompe ce qu'on ne peut plus toucher : le champ,
+   le mode et la destination sont donc en retrait ici aussi. */
+.shot{background:var(--paper-2);max-width:520px;margin:0 auto;overflow:hidden}
+.shot .bar{background:var(--ink);padding:11px 16px;display:flex;align-items:center;gap:8px}
+.shot .bar i{width:9px;height:9px;border-radius:50%;flex:none}
+.shot .bar i:nth-child(1){background:var(--red)}
+.shot .bar i:nth-child(2){background:var(--yellow)}
+/* l'app est monochrome : la 3e pastille ne peut pas être --app (encre sur encre) */
+.shot .bar i:nth-child(3){background:var(--paper)}
+.shot .bar span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#8f8f8f;margin-left:8px}
+.shot .body{padding:18px}
+.gear{display:flex;justify-content:flex-end;color:#8f8f8f;font-size:13px;margin-bottom:8px}
+
+/* la carte qui annonce l'étape en cours */
+.card{background:var(--white);padding:18px}
+.card.ctl{background:var(--paper);margin-top:8px}
+.vtitle{font-size:14px;font-weight:800;letter-spacing:-.01em;text-align:center}
+.flow{display:flex;align-items:center;gap:8px;margin:14px 0 12px}
+.node{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-size:14px;font-weight:700;background:var(--paper-2);color:#a8a8a8}
 .node.done{background:var(--ink);color:var(--paper)}
-.node.act{background:var(--yellow)}
-.conn{height:4px;flex:1;background:#cdc9bc}
+.node.act{background:var(--yellow);color:var(--ink)}
+.conn{height:4px;flex:1;background:var(--paper-2)}
 .conn.on{background:var(--ink)}
-.stage-status{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.stage-field{margin-top:22px;background:var(--ink);color:var(--paper);padding:11px 12px;font-family:var(--mono);
-  font-size:10px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.stage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
-.stage-dest{font-size:13px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.stage-dest small{display:block;font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:.08em;color:#5a5a5a}
-.stage-btns{display:flex;align-items:center;gap:8px;flex:none}
-.nb{display:grid;place-items:center;font-weight:700}
-.nb.s{width:30px;height:30px;font-size:12px;background:var(--paper);color:var(--ink)}
-.nb.b{width:46px;height:46px;font-size:18px;background:var(--ink);color:var(--paper)}
+.stline{text-align:center;font-size:13px;font-weight:700;letter-spacing:-.01em}
+.stline b{font-family:var(--mono);font-size:12px;font-weight:400;color:#5a5a5a;margin-left:5px}
+
+/* la carte de contrôle : lien, mode, destination, boutons, compteurs */
+.field{background:var(--ink);color:var(--paper);padding:11px 12px;display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10.5px;white-space:nowrap;overflow:hidden}
+.field .u{overflow:hidden;text-overflow:ellipsis}
+.seg{display:flex;gap:2px;margin-top:10px;opacity:.55}
+.seg span{flex:1;text-align:center;padding:8px 0;background:var(--paper-2);color:#5a5a5a;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.seg span.on{background:var(--ink);color:var(--paper)}
+.crow{display:flex;align-items:center;gap:12px;margin-top:14px}
+.dest{min-width:0;opacity:.55}
+.dest b{display:block;font-size:14px;font-weight:800;letter-spacing:-.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dest small{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:#5a5a5a}
+.cbtns{margin-left:auto;display:flex;align-items:center;gap:10px;flex:none}
+/* audio seul : indisponible tant que le téléchargement tourne */
+.audio{width:44px;height:44px;border-radius:50%;background:var(--paper-2);color:#a8a8a8;
+  display:grid;place-items:center;font-size:15px}
+.big{display:block}
+.big .ring{fill:none;stroke:#cdc9bc;stroke-width:5}
+.big .arc{fill:none;stroke:var(--yellow);stroke-width:5;stroke-linecap:round}
+.big .disc{fill:var(--ink)}
+.big .pct{fill:var(--paper);font-family:var(--mono);font-size:19px;font-weight:700}
+.stats{display:flex;gap:26px;margin-top:16px}
+.stat b{font-family:var(--mono);font-size:12.5px;font-weight:700}
+.stat span{display:block;font-size:10px;color:#5a5a5a;margin-top:2px}
+.stx{margin-top:12px;font-size:11px;color:#5a5a5a}
 
 /* ---------- BLOC FINAL — un aplat, pas un rectangle bordé ---------- */
 .slab{background:var(--app);color:var(--paper);padding:70px 32px;text-align:center;position:relative;overflow:hidden}
@@ -231,6 +265,7 @@ footer .mail:hover{border-color:var(--yellow)}
         <span class="name">Video Downloader</span>
       </a>
       <div class="nav-links">
+        <a href="#app">L'app</a>
         <a href="#features">Fonctions</a>
         <a href="#how">Comment ça marche</a>
         <a href="https://github.com/sandrophoto" target="_blank" rel="noopener">STUPIDS STUDIO</a>
@@ -276,7 +311,58 @@ footer .mail:hover{border-color:var(--yellow)}
     <div class="track" id="track"><b>Moteur · yt-dlp</b><b>Conversion · FFmpeg</b><b>Encodeur matériel</b></div>
   </div>
 
-  <section id="features" class="wrap">
+  <section id="app" class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow rv">L'APP</p>
+      <p class="note rv">L'étape 2 sur 3, en cours.</p>
+    </div>
+    <h2 class="rv">Tu vois<br>où ça en est.</h2>
+    <p class="lead rv" style="margin-bottom:40px">Pas de journal technique, pas de fenêtre qui s'empile. Une carte t'annonce l'étape en cours — analyse, téléchargement, conversion — et le gros bouton porte la progression. Rien de plus.</p>
+    <div class="shot rv" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>VIDEO DOWNLOADER PRO PLUS 3000</span></div>
+      <div class="body">
+        <div class="gear">⚙</div>
+
+        <!-- la carte d'étapes : titre de la vidéo, les 3 nœuds, l'étape en cours -->
+        <div class="card">
+          <div class="vtitle">Big Buck Bunny — Blender Foundation</div>
+          <div class="flow">
+            <div class="node done">✓</div><div class="conn on"></div>
+            <div class="node act">↓</div><div class="conn"></div>
+            <div class="node">✦</div>
+          </div>
+          <p class="stline">Téléchargement <b>· 62 %</b></p>
+        </div>
+
+        <!-- la carte de contrôle : le gros bouton porte la progression -->
+        <div class="card ctl">
+          <div class="field"><span>🔗</span><span class="u">https://www.youtube.com/watch?v=aqz-KE-bpKQ</span></div>
+          <div class="seg"><span class="on">Entière</span><span>Extrait</span></div>
+          <div class="crow">
+            <div class="dest"><b>Téléchargements</b><small>~/Users/toi</small></div>
+            <div class="cbtns">
+              <div class="audio">♫</div>
+              <svg class="big" viewBox="0 0 86 86" width="86" height="86">
+                <circle class="disc" cx="43" cy="43" r="28"/>
+                <circle class="ring" cx="43" cy="43" r="37"/>
+                <circle class="arc" cx="43" cy="43" r="37"
+                        stroke-dasharray="144.2 232.5" transform="rotate(-90 43 43)"/>
+                <text class="pct" x="43" y="50" text-anchor="middle">62</text>
+              </svg>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>8.42MiB/s</b><span>Vitesse</span></div>
+            <div class="stat"><b>214.53MiB</b><span>Taille</span></div>
+            <div class="stat"><b>00:47</b><span>Restant</span></div>
+          </div>
+          <p class="stx">Téléchargement…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap" style="padding-top:0">
     <div class="sec-head">
       <p class="eyebrow rv">CE QU'ELLE SAIT FAIRE</p>
       <p class="note rv">Une fenêtre, un champ, un bouton.</p>
@@ -289,32 +375,6 @@ footer .mail:hover{border-color:var(--yellow)}
       <div class="tile rv"><span class="ic">🎵</span><h3>Audio seul</h3><p>Un second bouton, plus discret : la meilleure piste audio en M4A, sans ré-encodage inutile.</p><div class="bar"></div></div>
       <div class="tile rv"><span class="ic">✂️</span><h3>Juste un extrait</h3><p>Deux poignées pour choisir un passage — seuls les fragments nécessaires sont téléchargés, pas la vidéo entière.</p><div class="bar"></div></div>
       <div class="tile rv"><span class="ic">🔄</span><h3>Moteur toujours frais</h3><p>Elle s'appuie sur yt-dlp et vérifie sa version toute seule. Une mise à jour ? Un clic dans les réglages.</p><div class="bar"></div></div>
-    </div>
-  </section>
-
-  <section id="showcase" class="wrap" style="padding-top:0">
-    <div class="show">
-      <div>
-        <p class="eyebrow rv">L'INTERFACE</p>
-        <h2 class="rv" style="margin-top:14px">Tu vois<br>où ça en est.</h2>
-        <p class="lead rv">Pas de journal technique, pas de fenêtre qui s'empile. Une carte t'annonce l'étape en cours — analyse, téléchargement, conversion — et le gros bouton porte la progression. Rien de plus.</p>
-      </div>
-      <div class="rv">
-        <div class="stage" aria-hidden="true">
-          <div class="stage-title">Big Buck Bunny — Blender Foundation</div>
-          <div class="stage-step">
-            <div class="node done">✓</div><div class="conn on"></div>
-            <div class="node act">↓</div><div class="conn"></div>
-            <div class="node">✦</div>
-          </div>
-          <div class="stage-status">Téléchargement · 62 %</div>
-          <div class="stage-field">🔗 https://www.youtube.com/watch?v=aqz-KE-bpKQ</div>
-          <div class="stage-row">
-            <div class="stage-dest">Téléchargements<small>~/Users/toi</small></div>
-            <div class="stage-btns"><div class="nb s">♫</div><div class="nb b">↓</div></div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
