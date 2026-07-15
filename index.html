@@ -69,6 +69,18 @@ nav .btn{padding:11px 16px}
   transition:color .2s,border-color .2s}
 .lnk:hover{color:#5a5a5a;border-color:var(--yellow)}
 
+/* ---------- Téléchargement en pause ----------
+   Les binaires restent dans les Releases et les apps installées continuent
+   de se mettre à jour : seule la mise à disposition publique est suspendue. */
+.soon{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;padding:14px 22px;background:var(--yellow);color:var(--ink)}
+.soon::before{content:"";width:8px;height:8px;background:var(--ink);flex:none;
+  animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+nav .soon{padding:11px 16px;font-size:11px}
+.slab .soon{background:var(--ink);color:var(--paper)}
+.slab .soon::before{background:var(--paper)}
+
 /* ---------- HERO ---------- */
 .hero{display:grid;grid-template-columns:1fr}
 @media(min-width:900px){.hero{grid-template-columns:1.1fr .9fr}}
@@ -269,7 +281,7 @@ footer .mail:hover{border-color:var(--yellow)}
         <a href="#features">Fonctions</a>
         <a href="#how">Comment ça marche</a>
         <a href="https://github.com/sandrophoto" target="_blank" rel="noopener">STUPIDS STUDIO</a>
-        <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger <span class="ar">↓</span></a>
+        <span class="soon">Téléchargement en pause</span>
       </div>
     </div>
   </nav>
@@ -280,7 +292,7 @@ footer .mail:hover{border-color:var(--yellow)}
       <h1>Video Downloader<br>Pro Plus 3000.</h1>
       <p class="sub">Colle un lien. Récupère la vidéo. <strong>C'est tout.</strong> Qualité maximale par défaut, conversion H265 quand il le faut — et rien d'autre à décider.</p>
       <div class="cta">
-        <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger gratuitement <span class="ar">↓</span></a>
+        <span class="soon">Téléchargement en pause</span>
         <a class="lnk" href="#how">Comment ça marche</a>
       </div>
       <p class="ver">Universel · Moteur mis à jour tout seul · Aucun réglage obligatoire</p>
@@ -408,10 +420,10 @@ footer .mail:hover{border-color:var(--yellow)}
   <div class="slab">
     <div class="sq1"></div>
     <div class="tri2"></div>
-    <h2>Prête quand tu l'es.</h2>
-    <p class="lead">Gratuite, sans compte, sans pub, sans mouchard.</p>
+    <h2>Bientôt de retour.</h2>
+    <p class="lead">Le téléchargement est en pause, le temps qu'on remette tout d'équerre. Les apps déjà installées continuent de se mettre à jour.</p>
     <div class="cta">
-      <a class="btn" href="https://github.com/sandrophoto/video-downloader-pro-plus-3000/releases/latest">Télécharger pour macOS <span class="ar">↓</span></a>
+      <span class="soon">Téléchargement en pause</span>
     </div>
     <p class="fine">yt-dlp et ffmpeg sont des projets libres tiers, téléchargés depuis leurs sources officielles. Télécharge uniquement des contenus que tu as le droit de récupérer.</p>
   </div>
